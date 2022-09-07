@@ -1,0 +1,121 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const examHeaderSchema = new Schema({
+    examName: {type: String,required: true},
+    examCode: {type: Number,required: true},
+    termID: {type: mongoose.Schema.ObjectId,ref: "AcademicTerm", required:true},
+    yearID: {type: mongoose.Schema.ObjectId,ref: "AcademicYear",required:true},
+    unitID: {type: mongoose.Schema.ObjectId,ref: "Unit", required:true},
+    examDescription: {type: String,required: true},
+    english:{
+        subjectFullName:{},
+        subjectShortName:{},
+        subjectCode:{},
+        score:{},
+        points:{},
+        grade:{},
+        subjectTeacher:{},
+        comment:{}
+    },
+    kiswahili:{
+        subjectFullName:{},
+        subjectShortName:{},
+        subjectCode:{},
+        score:{},
+        points:{},
+        grade:{},
+        subjectTeacher:{},
+        comment:{}
+    },
+    mathematics:{
+        subjectFullName:{},
+        subjectShortName:{},
+        subjectCode:{},
+        score:{},
+        points:{},
+        grade:{},
+        subjectTeacher:{},
+        comment:{}
+    },
+    biology:{
+        subjectFullName:{},
+        subjectShortName:{},
+        subjectCode:{},
+        score:{},
+        points:{},
+        grade:{},
+        subjectTeacher:{},
+        comment:{}
+    },
+    chemistry:{
+        subjectFullName:{},
+        subjectShortName:{},
+        subjectCode:{},
+        score:{},
+        points:{},
+        grade:{},
+        subjectTeacher:{},
+        comment:{}
+    },
+    physics:{
+        subjectFullName:{},
+        subjectShortName:{},
+        subjectCode:{},
+        score:{},
+        points:{},
+        grade:{},
+        subjectTeacher:{},
+        comment:{}
+    },
+    geography:{
+        subjectFullName:{},
+        subjectShortName:{},
+        subjectCode:{},
+        score:{},
+        points:{},
+        grade:{},
+        subjectTeacher:{},
+        comment:{}
+    },
+    history:{
+        subjectFullName:{},
+        subjectShortName:{},
+        subjectCode:{},
+        score:{},
+        points:{},
+        grade:{},
+        subjectTeacher:{},
+        comment:{}
+    },
+    cre:{
+        subjectFullName:{},
+        subjectShortName:{},
+        subjectCode:{},
+        score:{},
+        points:{},
+        grade:{},
+        subjectTeacher:{},
+        comment:{}
+    },
+    business:{
+        subjectFullName:{},
+        subjectShortName:{},
+        subjectCode:{},
+        score:{},
+        points:{},
+        grade:{},
+        subjectTeacher:{},
+        comment:{}
+    },
+    agriculture:{
+        subjectFullName:{},
+        subjectShortName:{},
+        subjectCode:{},
+        score:{},
+        points:{},
+        grade:{},
+        subjectTeacher:{},
+        comment:{}
+    },
+});
+module.exports = mongoose.model('ExamHeader', examHeaderSchema);

@@ -1,0 +1,552 @@
+<body>
+    <section class="notFound">
+        <div class="img">
+
+        </div>
+        <div class="text">
+            <h1>exams</h1>
+
+            <table>
+                <tr>
+                    <th>examID</th>
+                    <th>1st sub</th>
+                    <th>2st sub</th>
+                </tr>
+                <tr>
+                    <td id="examID"></td>
+                    <td id="st"></td>
+                    <td id="nd"></td>
+                </tr>
+               
+            </table>
+        </div>
+    </section>
+</body>
+
+
+<script>
+    let array1AllStudents = 
+        [
+        {
+            "_id": "630fcbd233621f2d94758b15",
+            "examID": "630f6d8ba9455052e3148b03",
+            "examinableSubjects": [
+                {
+                    "p1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p3": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "main": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "subjectID": "62ce2a7c73601cd0a5060afe",
+                    "subjectGroupID": "62ff5325427e15d2c8ee1b02",
+                    "subjectTeacherID": "6307774465ae3b5746ce4123",
+                    "outOf": 40,
+                    "weight": 100,
+                    "_id": "63077b4565ae3b5746ce416b",
+                    "score": 82
+                },
+                {
+                    "p1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p3": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "main": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "subjectID": "62ce2aac73601cd0a5060b01",
+                    "subjectGroupID": "62ff5325427e15d2c8ee1b02",
+                    "subjectTeacherID": "6307774465ae3b5746ce4123",
+                    "outOf": 30,
+                    "weight": 100,
+                    "_id": "630780a7b05254117c5c3b2f",
+                    "score": 82
+                },
+                {
+                    "score": 82
+                }
+            ],
+            "__v": 0
+        },
+        {
+            "_id": "630fcbd233621f2d94758b14",
+            "examID": "630f6d8ba9455052e3148b03",
+            "examinableSubjects": [
+                {
+                    "p1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p3": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "main": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "subjectID": "62ce2a7c73601cd0a5060afe",
+                    "subjectGroupID": "62ff5325427e15d2c8ee1b02",
+                    "subjectTeacherID": "6307774465ae3b5746ce4123",
+                    "outOf": 40,
+                    "weight": 100,
+                    "_id": "63077b4565ae3b5746ce416b",
+                    "score": 80
+                },
+                {
+                    "p1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p3": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "main": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "subjectID": "62ce2aac73601cd0a5060b01",
+                    "subjectGroupID": "62ff5325427e15d2c8ee1b02",
+                    "subjectTeacherID": "6307774465ae3b5746ce4123",
+                    "outOf": 30,
+                    "weight": 100,
+                    "_id": "630780a7b05254117c5c3b2f",
+                    "score": 10
+                }
+            ],
+            "__v": 0
+        },
+        {
+            "_id": "630fcbd233621f2d94758b13",
+            "examID": "630f6d8ba9455052e3148b03",
+            "examinableSubjects": [
+                {
+                    "p1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p3": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "main": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "subjectID": "62ce2a7c73601cd0a5060afe",
+                    "subjectGroupID": "62ff5325427e15d2c8ee1b02",
+                    "subjectTeacherID": "6307774465ae3b5746ce4123",
+                    "outOf": 40,
+                    "weight": 100,
+                    "_id": "63077b4565ae3b5746ce416b"
+                },
+                {
+                    "p1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p3": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "main": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "subjectID": "62ce2aac73601cd0a5060b01",
+                    "subjectGroupID": "62ff5325427e15d2c8ee1b02",
+                    "subjectTeacherID": "6307774465ae3b5746ce4123",
+                    "outOf": 30,
+                    "weight": 100,
+                    "_id": "630780a7b05254117c5c3b2f"
+                }
+            ],
+            "__v": 0
+        },
+        {
+            "_id": "630fcbd233621f2d94758b16",
+            "examID": "630f6d8ba9455052e3148b03",
+            "examinableSubjects": [
+                {
+                    "p1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p3": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "main": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "subjectID": "62ce2a7c73601cd0a5060afe",
+                    "subjectGroupID": "62ff5325427e15d2c8ee1b02",
+                    "subjectTeacherID": "6307774465ae3b5746ce4123",
+                    "outOf": 40,
+                    "weight": 100,
+                    "_id": "63077b4565ae3b5746ce416b"
+                },
+                {
+                    "p1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p3": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "main": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "subjectID": "62ce2aac73601cd0a5060b01",
+                    "subjectGroupID": "62ff5325427e15d2c8ee1b02",
+                    "subjectTeacherID": "6307774465ae3b5746ce4123",
+                    "outOf": 30,
+                    "weight": 100,
+                    "_id": "630780a7b05254117c5c3b2f"
+                }
+            ],
+            "__v": 0
+        },
+        {
+            "_id": "630fcbd233621f2d94758b17",
+            "examID": "630f6d8ba9455052e3148b03",
+            "examinableSubjects": [
+                {
+                    "p1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p3": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "main": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "subjectID": "62ce2a7c73601cd0a5060afe",
+                    "subjectGroupID": "62ff5325427e15d2c8ee1b02",
+                    "subjectTeacherID": "6307774465ae3b5746ce4123",
+                    "outOf": 40,
+                    "weight": 100,
+                    "_id": "63077b4565ae3b5746ce416b",
+                    "score": 86
+                },
+                {
+                    "p1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p3": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "main": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "subjectID": "62ce2aac73601cd0a5060b01",
+                    "subjectGroupID": "62ff5325427e15d2c8ee1b02",
+                    "subjectTeacherID": "6307774465ae3b5746ce4123",
+                    "outOf": 30,
+                    "weight": 100,
+                    "_id": "630780a7b05254117c5c3b2f",
+                    "score": 86
+                }
+            ],
+            "__v": 0
+        },
+        {
+            "_id": "630fcbd233621f2d94758b18",
+            "examID": "630f6d8ba9455052e3148b03",
+            "examinableSubjects": [
+                {
+                    "p1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p3": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "main": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "subjectID": "62ce2a7c73601cd0a5060afe",
+                    "subjectGroupID": "62ff5325427e15d2c8ee1b02",
+                    "subjectTeacherID": "6307774465ae3b5746ce4123",
+                    "outOf": 40,
+                    "weight": 100,
+                    "_id": "63077b4565ae3b5746ce416b"
+                },
+                {
+                    "p1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p3": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "main": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "subjectID": "62ce2aac73601cd0a5060b01",
+                    "subjectGroupID": "62ff5325427e15d2c8ee1b02",
+                    "subjectTeacherID": "6307774465ae3b5746ce4123",
+                    "outOf": 30,
+                    "weight": 100,
+                    "_id": "630780a7b05254117c5c3b2f"
+                }
+            ],
+            "__v": 0
+        },
+        {
+            "_id": "630fcbd233621f2d94758b19",
+            "examID": "630f6d8ba9455052e3148b03",
+            "examinableSubjects": [
+                {
+                    "p1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p3": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "main": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "subjectID": "62ce2a7c73601cd0a5060afe",
+                    "subjectGroupID": "62ff5325427e15d2c8ee1b02",
+                    "subjectTeacherID": "6307774465ae3b5746ce4123",
+                    "outOf": 40,
+                    "weight": 100,
+                    "_id": "63077b4565ae3b5746ce416b"
+                },
+                {
+                    "p1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "p3": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat1": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "cat2": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "main": {
+                        "outOf": null,
+                        "weight": null
+                    },
+                    "subjectID": "62ce2aac73601cd0a5060b01",
+                    "subjectGroupID": "62ff5325427e15d2c8ee1b02",
+                    "subjectTeacherID": "6307774465ae3b5746ce4123",
+                    "outOf": 30,
+                    "weight": 100,
+                    "_id": "630780a7b05254117c5c3b2f"
+                }
+            ],
+            "__v": 0
+        }
+        ]
+
+        let text = "";
+        let st1 = "";
+        let nd1 = "";
+        array1AllStudents.forEach((obj , index , arr)=>{
+            text += obj.examID +"<br>"
+            let array2SubjectsPerStudent = obj.examinableSubjects;
+            array2SubjectsPerStudent.forEach((obj2, index2, arr2)=>{
+                st1 += obj2[0].subjectID 
+            })
+        })
+       
+        document.getElementById("examID").innerHTML = text;
+        document.getElementById("st").innerHTML = st1;
+
+</script>
