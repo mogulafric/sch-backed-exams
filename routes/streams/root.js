@@ -15,7 +15,7 @@ router.route('/archive')
 router.route('/deactivate')
     .patch(streamController.deactivate)
 router.route('/remove/:streamID')
-    .get(streamController.remove)
+    .delete(streamController.remove)
 
 // sream teacher
 module.exports = router;

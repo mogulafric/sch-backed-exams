@@ -4,17 +4,17 @@ const Units = require("../../../model/units/unit");
 const Subjects = require("../../../model/exam/examinableSubjects");
 const { json } = require("body-parser");
 const getAllExams = catchAsync(async (req, res, next) => {
-  const result = await ExamHeader.find() 
+  const result = await ExamHeader.find()
   res.status(200).json({
-    status:'success',
-    result:result.lenght,
-    data:result
+    status: 'success',
+    result: result.length,
+    data: result
   })
 })
 
 const getExamById = catchAsync(async (req, res, next) => {
   let _id = req.param.id
-  const examHeaders = await ExamHeader.find({_id:_id}).populate({
+  const examHeaders = await ExamHeader.find({ _id: _id }).populate({
     path: 'unitID',
     select:
       'unitName unitCode',
@@ -39,7 +39,7 @@ const getExamById = catchAsync(async (req, res, next) => {
 });
 
 const registerExam = catchAsync(async (req, res, next) => {
-  let data= req.body;
+  let data = req.body;
   let examCode = data.examCode
   const duplicate = await ExamHeader.findOne({
     examCode: examCode,
@@ -54,19 +54,18 @@ const registerExam = catchAsync(async (req, res, next) => {
 
   data.examinableSubjects = subjects
   data.totalSubjects = subjects.length
-  if(data.totalSubjects < data.gradedSubjects)
-  {
+  if (data.totalSubjects < data.gradedSubjects) {
     return res.status(400).json({
-      status:'failed',
-      message:'graded subject cannot be more than total subjects'
+      status: 'failed',
+      message: 'graded subject cannot be more than total subjects'
     })
   }
- 
+
   const result = await ExamHeader.create(data)
   res.status(200).json({
-    status:"success",
-    result:result.length,
-    data:result
+    status: "success",
+    result: result.length,
+    data: result
   })
 });
 const updateExam = catchAsync(async (req, res, next) => {
@@ -77,7 +76,7 @@ const updateExam = catchAsync(async (req, res, next) => {
     examDescription,
     _id
   } = req.body;
-  if (!_id){
+  if (!_id) {
     return res
       .status(400)
       .json({
@@ -88,7 +87,7 @@ const updateExam = catchAsync(async (req, res, next) => {
   const examHeader = await ExamHeader.findOne({
     _id: _id
   }).exec();
-  if (!examHeader){
+  if (!examHeader) {
     return res.status(400).json({
       status: "failed",
       message: `mismatched of entered field!`,
@@ -108,10 +107,10 @@ const updateExam = catchAsync(async (req, res, next) => {
       examDescription: examDescription,
     }
   );
-  
-     return   res.status(200).json({ 
-      status: "success", result: result.length, data: result 
-    });
+
+  return res.status(200).json({
+    status: "success", result: result.length, data: result
+  });
 
 
 })
@@ -135,23 +134,23 @@ const getExamByid = catchAsync(async (req, res, next) => {
     select:
       'beginsAt endsAt',
   });
-  if (!examSetup){
-    return res.status(200).json({ 
-    status: 'success',
-    data: examSetup 
-  })
-}
+  if (!examSetup) {
+    return res.status(200).json({
+      status: 'success',
+      data: examSetup
+    })
+  }
   res.status(200).json({
     status: "success",
     result: examSetup.length,
     data: examSetup,
   });
   if (!examSetup) {
-    return 
+    return
     res.status(204).json({
-       status: 'success', 
-       message: `No exam matches ID `
-       });
+      status: 'success',
+      message: `No exam matches ID `
+    });
   }
   res.json(examSetup);
 });

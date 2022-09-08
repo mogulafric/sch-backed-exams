@@ -5,14 +5,14 @@ const catchAsync = require("../../../utils/catchAsync");
 const units = require("../../../model/units/unit")
 const getAllExaminableSubjects = catchAsync(async (req, res, next) => {
   const examinbleSubjects = await ExaminbleSubjects.find().populate({
-    path:'unitID'
+    path: 'unitID'
   }).populate({
-    path:'subjectID'
+    path: 'subjectID'
   }).populate({
-    path:'subjectTeacherID',
-    populate:{
-      path:'teacherID',
-      model:'Teacher'
+    path: 'subjectTeacherID',
+    populate: {
+      path: 'teacherID',
+      model: 'Teacher'
     }
   })
   if (!examinbleSubjects) return res.status(204).json({
@@ -28,7 +28,7 @@ const getAllExaminableSubjects = catchAsync(async (req, res, next) => {
 const addExaminableSubject = catchAsync(async (req, res, next) => {
   let data = req.body
 
- 
+
   if (!data) {
     res.status(400).json({
       status: 'failed',
@@ -39,42 +39,42 @@ const addExaminableSubject = catchAsync(async (req, res, next) => {
   let subjectTeacherID = data.subjectTeacherID
   let unitID = data.unitID
   const unitIDCheck = await SubjectTeachers.findOne({
-    subjectTeacherID:[subjectTeacherID]
+    subjectTeacherID: [subjectTeacherID]
   })
-  if(!unitIDCheck){
+  if (!unitIDCheck) {
     return res.status(400).json({
-      status:'failed',
-      message:'Error,unmet requirement - subject teacher cannot be empty or null'
+      status: 'failed',
+      message: 'Error,unmet requirement - subject teacher cannot be empty or null'
     })
   }
-  
+
   let examType = data.examType
-  if(examType ==="Standard"){
-    
+  if (examType === "Standard") {
+
   }
-  else if(examType ==="Normal"){
+  else if (examType === "Normal") {
     return res.status(200).json({
-      message:"insert a norm setup"
-     })
+      message: "insert a norm setup"
+    })
   }
-  else{
+  else {
     const result = await ExaminbleSubjects.create(data)
 
-     return res.status(200).json({
-      status:"success",
-      result:result.length,
-      data:result
-     })
+    return res.status(200).json({
+      status: "success",
+      result: result.length,
+      data: result
+    })
   }
 });
 const deleteExaminableSubject = catchAsync(async (req, res, next) => {
   let data = req.body;
   let _id = data._id
-  const result = await ExaminbleSubjects.delete({_id:_id})
+  const result = await ExaminbleSubjects.delete({ _id: _id })
   res.status(200).json({
-    status:'success',
-    result:result.length,
-    data:result
+    status: 'success',
+    result: result.length,
+    data: result
   })
 });
 const updateExaminableSubject = catchAsync(async (req, res, next) => {
@@ -88,11 +88,12 @@ const updateExaminableSubject = catchAsync(async (req, res, next) => {
   const examinbleSubjects = await ExaminbleSubjects.findOne({
     _id: _id
   })
-  if (!examinbleSubjects) {return res.status(400).json({
-    status: 'failed',
-    message:'We could not find eximanable subject' 
-  });
-}
+  if (!examinbleSubjects) {
+    return res.status(400).json({
+      status: 'failed',
+      message: 'We could not find eximanable subject'
+    });
+  }
   if (!examinbleSubjects) {
     return res
       .status(204)
@@ -100,37 +101,37 @@ const updateExaminableSubject = catchAsync(async (req, res, next) => {
         status: 'success', message: `No exam matches ID .`
       });
   }
-  if(!req.body?.subjectID) subjectID = examinbleSubjects.subjectID;
-  
+  if (!req.body?.subjectID) subjectID = examinbleSubjects.subjectID;
+
   // "unitID": "62cdf3794a7817171c510c5
   // "subjectGroupID": "62ff5325427e15d2c8ee1b02",
   //       "examType": "Default",
   //       "outOf": 100,
   //       "weight": 100,
   const result = await ExaminbleSubjects.updateOne({
-    _id:_id
-  },{
-    data:data
-  }, {upsert:true})
- 
+    _id: _id
+  }, {
+    data: data
+  }, { upsert: true })
+
   console.log(data)
   res.status(200).json({
-    status:'success',
-    data:result
+    status: 'success',
+    data: result
   })
 });
 const getExaminableSubjectById = catchAsync(async (req, res, next) => {
   let _id = req.params.id;
-  const result = await ExaminbleSubjects.find({_id:_id})
+  const result = await ExaminbleSubjects.find({ _id: _id })
   res.status(200).json({
-    status:'success',
-    result:result.length,
-    data:result
+    status: 'success',
+    result: result.length,
+    data: result
   })
 });
 const remove = catchAsync(async (req, res, next) => {
   let examinbleSubjectID = res.parama.examinbleSubjectID
-  if (!examinbleSubjectID){
+  if (!examinbleSubjectID) {
     return res.status(400).json({
       status: 'failed',
       message: 'Id must be provided for this request'

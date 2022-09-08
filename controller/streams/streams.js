@@ -79,7 +79,7 @@ const archive = catchAsync(async (req, res, next) => {
   res.json(result);
 });
 const remove = catchAsync(async (req, res, next) => {
-  let streamID = res.parama.streamID
+  let streamID = res.params.streamID
   if (!streamID) {
     return res.status(400).json({
       status: 'failed',
