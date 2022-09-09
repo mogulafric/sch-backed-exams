@@ -8293,3 +8293,6 @@
 20220909	12:34:05	984a957b-2650-495f-af6b-719fdf941468	GET	undefined	/api/v1/exams/setup/getexambyid/631b07bba8885d079f59cc3f
 20220909	12:35:57	3d62eb80-a7d2-44a4-aced-1412811c07f7	GET	undefined	/api/v1/exams/setup/getexambyid/
 20220909	12:36:15	b70add8f-a630-4e88-9b69-428893d7bd20	GET	undefined	/api/v1/exams/setup/getexambyid/631b07bba8885d079f59cc3f
+20220909	12:40:01	95cde388-5608-47fd-b4be-4371e55610ba	PATCH	undefined	/api/v1/exams/setup/update
+20220909	12:41:13	4a78c12f-e66c-4fe1-ad68-f8614ff93062	PATCH	undefined	/api/v1/exams/setup/update
+20220909	12:41:17	7a1cc4b7-ebe2-4e7b-87c7-d62e4df748c2	PATCH	undefined	/api/v1/exams/setup/update
