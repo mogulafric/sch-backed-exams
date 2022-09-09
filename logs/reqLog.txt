@@ -8282,3 +8282,14 @@
 20220906	19:20:13	075a7eda-64c9-4e2e-aef0-6f1e7ebe1516	GET	undefined	/favicon.ico
 20220907	14:46:58	eb131a1b-c41c-4aea-9b73-c569a68ee21e	GET	undefined	/
 20220907	14:46:58	a0307908-0ee6-4981-bbef-f45edb13301e	GET	undefined	/favicon.ico
+20220909	12:18:55	f1ba25a4-fab0-4de5-87e4-dd769698bd5c	POST	undefined	/api/v1/auth/login
+20220909	12:27:01	12fc93da-d92e-4856-a5d7-2ced203b0d22	POST	undefined	/api/v1/exams/setup/registerexam
+20220909	12:28:06	7748a90e-5369-4dd9-b918-b3395d48123a	POST	undefined	/api/v1/exams/setup/registerexam
+20220909	12:30:34	178cd316-104f-4091-af51-44c21fafa64e	POST	undefined	/api/v1/exams/setup/registerexam
+20220909	12:30:59	082c737f-ad71-499e-a3f8-89d479b4e202	GET	undefined	/api/v1/exams/setup/getallexams
+20220909	12:31:30	23ca8fe4-7ebf-4444-b4c4-766b66f1bba9	GET	undefined	/api/v1/exams/setup/getallexams
+20220909	12:31:46	65df89bc-a432-4d79-a51a-f44fbd282f0e	GET	undefined	/api/v1/exams/setup/getexambyid/631b07bba8885d079f59cc3f
+20220909	12:32:34	198f0907-82ca-46ea-bc2b-5895434c4847	GET	undefined	/api/v1/exams/setup/getexambyid/631b07bba8885d079f59cc3f
+20220909	12:34:05	984a957b-2650-495f-af6b-719fdf941468	GET	undefined	/api/v1/exams/setup/getexambyid/631b07bba8885d079f59cc3f
+20220909	12:35:57	3d62eb80-a7d2-44a4-aced-1412811c07f7	GET	undefined	/api/v1/exams/setup/getexambyid/
+20220909	12:36:15	b70add8f-a630-4e88-9b69-428893d7bd20	GET	undefined	/api/v1/exams/setup/getexambyid/631b07bba8885d079f59cc3f

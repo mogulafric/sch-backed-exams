@@ -44,23 +44,12 @@ const registerExam = catchAsync(async (req, res, next) => {
   const duplicate = await ExamHeader.findOne({
     examCode: examCode,
   }).exec();
-  if (duplicate) {
+  if(duplicate){
     return res.status(400).json({
       status: 'failed',
       message: 'A duplicate exam code exist'
     })
   }
-  let subjects = await Subjects.find()
-
-  data.examinableSubjects = subjects
-  data.totalSubjects = subjects.length
-  if (data.totalSubjects < data.gradedSubjects) {
-    return res.status(400).json({
-      status: 'failed',
-      message: 'graded subject cannot be more than total subjects'
-    })
-  }
-
   const result = await ExamHeader.create(data)
   res.status(200).json({
     status: "success",
@@ -111,11 +100,7 @@ const updateExam = catchAsync(async (req, res, next) => {
   return res.status(200).json({
     status: "success", result: result.length, data: result
   });
-
-
 })
-
-
 const getExamByid = catchAsync(async (req, res, next) => {
   const _id = req.params.id
   if (!_id)
