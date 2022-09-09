@@ -8382,3 +8382,7 @@
 20220909	17:02:12	2c46000b-0e36-431a-94c3-fff0ff234a32	GET	undefined	/api/v1/exams/capturedmarks/getmarksbyexamid/630f6d8ba9455052e3148b03
 20220909	17:03:12	40df5ce1-d54b-46b8-aa18-7a01d65f9082	GET	undefined	/api/v1/exams/capturedmarks/getmarksbyexamid/630f6d8ba9455052e3148b03
 20220909	17:04:03	ec1b1d1a-2258-45e5-93ea-49cf5f68df2a	GET	undefined	/api/v1/exams/capturedmarks/getmarksbyexamid/630f6d8ba9455052e3148b03
+20220909	17:14:06	3e354af2-e650-47ab-9cd9-ecafabc12af1	GET	undefined	/api/v1/exams/capturedmarks/getmarksbyexamitementryid/631b193dd7aa111a1fda6e96
+20220909	17:16:09	201eca8f-5fcd-4898-be7c-c39a9aa39dd4	GET	undefined	/api/v1/exams/capturedmarks/getmarksbyexamitementryid/631b193dd7aa111a1fda6e96
+20220909	17:34:59	cd49ce2a-5fe1-4099-adb8-2d5910a00b31	GET	undefined	/api/v1/exams/capturedmarks/getmarksbyexamitementryid/631b193dd7aa111a1fda6e96
+20220909	17:35:09	cf418d38-a2b0-4d9e-bf60-4eaa0b7056e8	GET	undefined	/api/v1/exams/capturedmarks/getmarksbyexamitementryid/631b193dd7aa111a1fda6e96

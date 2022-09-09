@@ -56,19 +56,19 @@ const initiateMarks = catchAsync(async (req, res, next) => {
 const captureScoreByExamBySubject = catchAsync(async (req, res, next) => {
       let { data } = req.body
       let _id = data._id
-      
-      const findExamList = await CaptureMarks.findOne({_id:_id})
+
+      const findExamList = await CaptureMarks.findOne({ _id: _id })
       if (!findExamList) {
             return res.status(400).json({
                   status: 'failed',
                   message: 'we could not retried a matching id for the selected item'
             })
       }
-      let result = await CaptureMarks.updateOne({_id:_id},data)
+      let result = await CaptureMarks.updateOne({ _id: _id }, data)
       res.status(201).json({
-            status:'success',
-            result:result.length,
-            data:result
+            status: 'success',
+            result: result.length,
+            data: result
       })
 })
 const getCapturedMarksByItemEntryID = catchAsync(async (req, res, next) => {
@@ -104,12 +104,11 @@ const getCapturedMarksByExamID = catchAsync(async (req, res, next) => {
       })
 })
 const subjectGradesAndComments = catchAsync(async (req, res, next) => {
-      let { score, isKiwaswahili } = req.body
+      let { kiswahili, english, mathematic } = req.body
       let grade = ""
       let comment = ""
-      let subjectTeacher = ""
       let points = 0
-      if (isKiwaswahili) {
+      if (kiswahili){
 
 
             // calculate subject grade
@@ -180,16 +179,7 @@ const subjectGradesAndComments = catchAsync(async (req, res, next) => {
       else { }
 
       console.log(comment)
-      // add comments
-      // update teachers details
-
-      // const examEntries = await CaptureMarks.find({examID:examID})
-      // if (!examEntries){
-      //       return res.status(400).json({
-      //             status: 'failed',
-      //             message: 'We could find a matching data for your request'
-      //       })
-      // }
+ 
 
       res.status(200).json({
             status: 'success',
