@@ -56,14 +56,15 @@ const initiateMarks = catchAsync(async (req, res, next) => {
 const captureScoreByExamBySubject = catchAsync(async (req, res, next) => {
       let { data } = req.body
       let _id = data._id
-      const findExamList = await CaptureMarks.findOne({_id: _id})
+      
+      const findExamList = await CaptureMarks.findOne({_id:_id})
       if (!findExamList) {
             return res.status(400).json({
                   status: 'failed',
                   message: 'we could not retried a matching id for the selected item'
             })
       }
-      let result = await CaptureMarks.update(data)
+      let result = await CaptureMarks.updateOne({_id:_id},data)
       res.status(201).json({
             status:'success',
             result:result.length,
@@ -84,6 +85,8 @@ const getCapturedMarksByItemEntryID = catchAsync(async (req, res, next) => {
             result: examEntries.length,
             data: examEntries
       })
+
+
 })
 const getCapturedMarksByExamID = catchAsync(async (req, res, next) => {
       let examID = req.params.examID
