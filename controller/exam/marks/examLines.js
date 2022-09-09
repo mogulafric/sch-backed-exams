@@ -6,7 +6,6 @@ const Unit = require("../../../model/units/unit")
 const initiateMarks = catchAsync(async (req, res, next) => {
       let data = req.body
       let examID = data._id
-
       const checkExist = await CaptureMarks.findOne({
             examID: examID
       })
@@ -22,49 +21,31 @@ const initiateMarks = catchAsync(async (req, res, next) => {
       })
       let unitCurrent = getUnitID.unitCode
       const studentsUnit = await Students.find({
-            unitCurrent: unitCurrent
+            unitCurrent:unitCurrent 
       })
+      if(!unitCurrent){
+            return res.status(200).json({
+               status:"failed",
+               message:'we could not retrive students from the class provided'   
+            })
+      }
       let setUpExam = await SetUpExam.findOne({
             _id: examID
       })
-      let examinableSubjects = setUpExam.examinableSubjects
-
-      let students = []
-      let StudentID = studentsUnit.map((el) => {
-            students.push(el)
-      })
-
-      let result = []
-      let studentsMarks = students.map((el) => {
-
-            let studentID = el
-            let examLinesQuery = {
-                  examID: examID,
-                  studentID: studentID
-            }
-            result.push(examLinesQuery)
-      })
-      const finalResult = await CaptureMarks.create(result)
-      const examlinesEntries = await CaptureMarks.find({ examID: examID })
-      examlinesEntries.forEach(async (item, index, arr) => {
-            let addMarksID = item._id
-            let addSubject = await CaptureMarks.updateOne({
-                  _id: addMarksID
-            },
-                  {
-                        $addToSet: {
-                              examinableSubjects:
-                                    { $each: examinableSubjects }
-                        }
-                  }
-            )
-
-      })
-      res.status(200).json({
-            status: 'success',
-            result: finalResult.length,
-            data: finalResult
-      })
+      let results = []
+     studentsUnit.forEach(async(el)=>{
+       let studentID = el._id
+       let result = {
+            examID:examID, studentID:studentID
+       }
+       results.push(result)
+     })
+    let final = await CaptureMarks.create(results)
+     res.status(200).json({
+      status:'success',
+      result:final.length,
+      data:final
+     })
 })
 const captureScoreByExamBySubject = catchAsync(async(req, res, next) => {
       let { _id, subjectObjectID, score, index } = req.body
