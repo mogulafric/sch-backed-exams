@@ -3,6 +3,7 @@ const SetUpExam = require("../../../model/exam/examHeader");
 const catchAsync = require("../../../utils/catchAsync");
 const Students = require("../../../model/students/students")
 const Unit = require("../../../model/units/unit")
+const cal = require("../../../controller/exam/marks/subjectandcomments")
 const initiateMarks = catchAsync(async (req, res, next) => {
       let data = req.body
       let examID = data._id
@@ -103,88 +104,893 @@ const getCapturedMarksByExamID = catchAsync(async (req, res, next) => {
             data: examEntries
       })
 })
+
 const subjectGradesAndComments = catchAsync(async (req, res, next) => {
-      let { kiswahili, english, mathematic } = req.body
-      let grade = ""
-      let comment = ""
-      let points = 0
-      if (kiswahili){
+      let { data } = req.body
+      let examID = data.examID
+      if(!examID){
+            return res.status(400).json({
+                 status:'failed',
+                  message:'please provide exam id'
+            })
+      }
+      let studentList = await CaptureMarks.find({examID:examID})
+      //    initialize comment for all subjects
+      let { commentKiswahili,
+            commentEnglish,
+            commentMathematics,
+            commentBiology,
+            commentChemistry,
+            commentPhysics,
+            commentHistory,
+            commentCRE,
+            commentGeography,
+            commentAgriculture,
+            commentBusiness } = ""
+      // initialize grades for all subjects
+      let { gradeKiswahili,
+            gradeEnglish,
+            gradeMathematics,
+            gradeBiology,
+            gradePhysics,
+            gradeChemistry,
+            gradeCRE,
+            gradeGeography,
+            gradeHistory,
+            gradeBusiness,
+            gradeAgriculture } = ""
+      // initialize points for all subjects
+      let { pointsKiswahili,
+            pointsEnglish,
+            pointsMathematics,
+            pointsPhysics,
+            pointsBiology,
+            pointsChemistry,
+            pointsHistory,
+            pointsGeography,
+            pointsCRE,
+            pointsAgriculture,
+            pointsBusiness } = 0
+      // initialize points for all 
+      let resultArray = []
+      studentList.forEach(async(obj, index, array) => {
+            let scoreKiswahili = obj.kiswahili.score
+            let scoreEnglish = obj.english.score
+            let scoreMathematics = obj.mathematics.score
+            let scoreBiology = obj.biology.score
+            let scorePhysics = obj.physics.score
+            let scoreChemistry = obj.chemistry.score
+            let scoreHistory = obj.history.score
+            let scoreCRE = obj.cre.score
+            let scoreGeography = obj.geography.score
+            let scoreAgriculture = obj.agriculture.score
+            let scoreBusiness = obj.business.score
+            // update kiswahili
 
-
-            // calculate subject grade
-            if (score >= 80 && score <= 100) {
-                  grade = "A"
-                  comment = "Excellent"
-                  points = 12
+            if (scoreKiswahili >= 80 && scoreKiswahili <= 100) {
+                  commentKiswahili = "Vyema"
+                  pointsKiswahili = 12
+                  gradeKiswahili = "A"
             }
-            else if (score >= 75 && score <= 79.99) {
-                  grade = "A-"
-                  comment = "V.Good"
-                  points = 11
+            else if (scoreKiswahili >= 75 && scoreKiswahili <= 79.99) {
+                  commentKiswahili = "Vizuri sana"
+                  pointsKiswahili = 11
+                  gradeKiswahili = "A-"
             }
-            else if (score >= 70 && score <= 75.99) {
-                  grade = "B+"
-                  comment = "Good"
-                  points = 9
+            else if (scoreKiswahili >= 70 && scoreKiswahili <= 74.99) {
+                  commentKiswahili = "Vizuri"
+                  pointsKiswahili = 10
+                  gradeKiswahili = "B+"
             }
-            else if (score >= 65 && score <= 69.99) {
-                  grade = "B+"
-                  comment = "Average"
-                  points = 8
+            else if (scoreKiswahili >= 65 && scoreKiswahili <= 69.99) {
+                  commentKiswahili = "Jaribio nzuri"
+                  pointsKiswahili = 9
+                  gradeKiswahili = "B"
             }
-            else if (score >= 60 && score <= 64.99) {
-                  grade = "B+"
-                  comment = "Fair"
-                  points = 8
+            else if (scoreKiswahili >= 60 && scoreKiswahili <= 64.99) {
+                  commentKiswahili = "Wastani"
+                  pointsKiswahili = 8
+                  gradeKiswahili = "B-"
             }
-            else if (score >= 55 && score <= 59.99) {
-                  grade = "B+"
-                  comment = "Fair"
-                  points = 7
+            else if (scoreKiswahili >= 55 && scoreKiswahili <= 59.99) {
+                  commentKiswahili = "Wastani"
+                  pointsKiswahili = 7
+                  gradeKiswahili = "C+"
             }
-            else if (score >= 50 && score <= 54.99) {
-                  grade = "B+"
-                  comment = "Good trial"
-                  points = 6
+            else if (scoreKiswahili >= 50 && scoreKiswahili <= 54.99) {
+                  commentKiswahili = "Jaribio nzuri"
+                  pointsKiswahili = 6
+                  gradeKiswahili = "C"
             }
-            else if (score >= 45 && score <= 49.99) {
-                  grade = "B+"
-                  comment = "Work harder"
-                  points = 5
+            else if (scoreKiswahili >= 45 && scoreKiswahili <= 49.99) {
+                  commentKiswahili = "jaribio"
+                  pointsKiswahili = 5
+                  gradeKiswahili = "C-"
             }
-            else if (score >= 40 && score <= 44.99) {
-                  grade = "B+"
-                  comment = "Improve"
-                  points = 4
+            else if (scoreKiswahili >= 40 && scoreKiswahili <= 44.99) {
+                  commentKiswahili = "Jitahidi"
+                  pointsKiswahili = 4
+                  gradeKiswahili = "D+"
             }
-            else if (score >= 35 && score <= 39.99) {
-                  grade = "B+"
-                  comment = "Put effort"
-                  points = 3
+            else if (scoreKiswahili >= 35 && scoreKiswahili <= 39.99) {
+                  commentKiswahili = "Tia bidii"
+                  pointsKiswahili = 3
+                  gradeKiswahili = "D"
             }
-            else if (score >= 30 && score <= 34.99) {
-                  grade = "B+"
-                  comment = "Put effort"
-                  points = 2
+            else if (scoreKiswahili >= 30 && scoreKiswahili <= 34.99) {
+                  commentKiswahili = "Jitahidi"
+                  pointsKiswahili = 2
+                  gradeKiswahili = "D-"
             }
-            else if (score >= 0 && score <= 29.99) {
-                  grade = "B+"
-                  comment = "Avoid E's"
-                  points = 1
+            else if (scoreKiswahili >= 1 && scoreKiswahili <= 29.99) {
+                  commentKiswahili = "Ji kaze"
+                  pointsKiswahili = 1
+                  gradeKiswahili = "E"
             }
             else {
-
+                  commentKiswahili = null
+                  pointsKiswahili = null
+                  gradeKiswahili = null
             }
-      }
-      else { }
 
-      console.log(comment)
- 
+
+            //english
+
+
+            if (scoreEnglish >= 80 && scoreEnglish <= 100) {
+                  commentEnglish = "Excellent"
+                  pointsEnglish = 12
+                  gradeEnglish = "A"
+            }
+            else if (scoreEnglish >= 75 && scoreEnglish <= 79.99) {
+                  commentEnglish = "V.good"
+                  pointsEnglish = 11
+                  gradeEnglish = "A-"
+            }
+            else if (scoreEnglish >= 70 && scoreEnglish <= 74.99) {
+                  commentEnglish = "Good"
+                  pointsEnglish = 10
+                  gradeEnglish = "B+"
+            }
+            else if (scoreEnglish >= 65 && scoreEnglish <= 69.99) {
+                  commentEnglish = "Fairly good"
+                  pointsEnglish = 9
+                  gradeEnglish = "B"
+            }
+            else if (scoreEnglish >= 60 && scoreEnglish <= 64.99) {
+                  commentEnglish = "Fair"
+                  pointsEnglish = 8
+                  gradeEnglish = "B-"
+            }
+            else if (scoreEnglish >= 55 && scoreEnglish <= 59.99) {
+                  commentEnglish = "Fair"
+                  pointsEnglish = 7
+                  gradeEnglish = "C+"
+            }
+            else if (scoreEnglish >= 50 && scoreEnglish <= 54.99) {
+                  commentEnglish = "Good trial"
+                  pointsEnglish = 6
+                  gradeEnglish = "C"
+            }
+            else if (scoreEnglish >= 45 && scoreEnglish <= 49.99) {
+                  commentEnglish = "You can do better"
+                  pointsEnglish = 5
+                  gradeEnglish = "C-"
+            }
+            else if (scoreEnglish >= 40 && scoreEnglish <= 44.99) {
+                  commentEnglish = "Work hard"
+                  pointsEnglish = 4
+                  gradeEnglish = "D+"
+            }
+            else if (scoreEnglish >= 35 && scoreEnglish <= 39.99) {
+                  commentEnglish = "More effort"
+                  pointsEnglish = 3
+                  gradeEnglish = "D"
+            }
+            else if (scoreEnglish >= 30 && scoreEnglish <= 34.99) {
+                  commentEnglish = "Avoid D's"
+                  pointsEnglish = 2
+                  gradeEnglish = "D-"
+            }
+            else if (scoreEnglish >= 0 && scoreEnglish <= 29.99) {
+                  commentEnglish = "Avoid E's"
+                  pointsEnglish = 1
+                  gradeEnglish = "E"
+            }
+            else {
+                  commentEnglish = null
+                  pointsEnglish = null
+                  gradeEnglish = null
+            }
+
+
+            // mathematics
+            if (scoreMathematics >= 80 && scoreMathematics <= 100) {
+                  commentMathematics = "Excellent"
+                  pointsMathematics = 12
+                  gradeMathematics = "A"
+            }
+            else if (scoreMathematics >= 75 && scoreMathematics <= 79.99) {
+                  commentMathematics = "V.good"
+                  pointsMathematics = 11
+                  gradeMathematics = "A-"
+            }
+            else if (scoreMathematics >= 70 && scoreMathematics <= 74.99) {
+                  commentMathematics = "Good"
+                  pointsMathematics = 10
+                  gradeMathematics = "B+"
+            }
+            else if (scoreMathematics >= 65 && scoreMathematics <= 69.99) {
+                  commentMathematics = "Fairly good"
+                  pointsMathematics = 9
+                  gradeMathematics = "B"
+            }
+            else if (scoreMathematics >= 60 && scoreMathematics <= 64.99) {
+                  commentMathematics = "Fair"
+                  pointsMathematics = 8
+                  gradeMathematics = "B-"
+            }
+            else if (scoreMathematics >= 55 && scoreMathematics <= 59.99) {
+                  commentMathematics = "Fair"
+                  pointsMathematics = 7
+                  gradeMathematics = "C+"
+            }
+            else if (scoreMathematics >= 50 && scoreMathematics <= 54.99) {
+                  commentMathematics = "Good trial"
+                  pointsMathematics = 6
+                  gradeMathematics = "C"
+            }
+            else if (scoreMathematics >= 45 && scoreMathematics <= 49.99) {
+                  commentMathematics = "You can do better"
+                  pointsMathematics = 5
+                  gradeMathematics = "C-"
+            }
+            else if (scoreMathematics >= 40 && scoreMathematics <= 44.99) {
+                  commentMathematics = "Work hard"
+                  pointsMathematics = 4
+                  gradeMathematics = "D+"
+            }
+            else if (scoreMathematics >= 35 && scoreMathematics <= 39.99) {
+                  commentMathematics = "More effort"
+                  pointsMathematics = 3
+                  gradeMathematics = "D"
+            }
+            else if (scoreMathematics >= 30 && scoreMathematics <= 34.99) {
+                  commentMathematics = "Avoid D's"
+                  pointsMathematics = 2
+                  gradeMathematics = "D-"
+            }
+            else if (scoreMathematics >= 0 && scoreMathematics <= 29.99) {
+                  commentMathematics = "Avoid E's"
+                  pointsMathematics = 1
+                  gradeMathematics = "E"
+            }
+            else {
+                  commentMathematics = null
+                  pointsMathematics = null
+                  gradeMathematics = null
+            }
+
+
+            // biology
+            if (scoreBiology >= 80 && scoreBiology <= 100) {
+                  commentBiology = "Excellent"
+                  pointsBiology = 12
+                  gradeBiology = "A"
+            }
+            else if (scoreBiology >= 75 && scoreBiology <= 79.99) {
+                  commentBiology = "V.good"
+                  pointsBiology = 11
+                  gradeBiology = "A-"
+            }
+            else if (scoreBiology >= 70 && scoreBiology <= 74.99) {
+                  commentBiology = "Good"
+                  pointsBiology = 10
+                  gradeBiology = "B+"
+            }
+            else if (scoreBiology >= 65 && scoreBiology <= 69.99) {
+                  commentBiology = "Fairly good"
+                  pointsBiology = 9
+                  gradeBiology = "B"
+            }
+            else if (scoreBiology >= 60 && scoreBiology <= 64.99) {
+                  commentBiology = "Fair"
+                  pointsBiology = 8
+                  gradeBiology = "B-"
+            }
+            else if (scoreBiology >= 55 && scoreBiology <= 59.99) {
+                  commentBiology = "Fair"
+                  pointsBiology = 7
+                  gradeBiology = "C+"
+            }
+            else if (scoreBiology >= 50 && scoreBiology <= 54.99) {
+                  commentBiology = "Good trial"
+                  pointsBiology = 6
+                  gradeBiology = "C"
+            }
+            else if (scoreBiology >= 45 && scoreBiology <= 49.99) {
+                  commentBiology = "You can do better"
+                  pointsBiology = 5
+                  gradeBiology = "C-"
+            }
+            else if (scoreBiology >= 40 && scoreBiology <= 44.99) {
+                  commentBiology = "Work hard"
+                  pointsBiology = 4
+                  gradeBiology = "D+"
+            }
+            else if (scoreBiology >= 35 && scoreBiology <= 39.99) {
+                  commentBiology = "More effort"
+                  pointsBiology = 3
+                  gradeBiology = "D"
+            }
+            else if (scoreBiology >= 30 && scoreBiology <= 34.99) {
+                  commentBiology = "Avoid D's"
+                  pointsBiology = 2
+                  gradeBiology = "D-"
+            }
+            else if (scoreBiology >= 0 && scoreBiology <= 29.99) {
+                  commentBiology = "Avoid E's"
+                  pointsBiology = 1
+                  gradeBiology = "E"
+            }
+            else {
+                  commentBiology = null
+                  pointsBiology = null
+                  gradeBiology = null
+            }
+
+
+            // physcis
+            if (scorePhysics >= 80 && scorePhysics <= 100) {
+                  commentPhysics = "Excellent"
+                  pointsPhysics = 12
+                  gradePhysics = "A"
+            }
+            else if (scorePhysics >= 75 && scorePhysics <= 79.99) {
+                  commentPhysics = "V.good"
+                  pointsPhysics = 11
+                  gradePhysics = "A-"
+            }
+            else if (scorePhysics >= 70 && scorePhysics <= 74.99) {
+                  commentPhysics = "Good"
+                  pointsPhysics = 10
+                  gradePhysics = "B+"
+            }
+            else if (scorePhysics >= 65 && scorePhysics <= 69.99) {
+                  commentPhysics = "Fairly good"
+                  pointsPhysics = 9
+                  gradePhysics = "B"
+            }
+            else if (scorePhysics >= 60 && scorePhysics <= 64.99) {
+                  commentPhysics = "Fair"
+                  pointsPhysics = 8
+                  gradePhysics = "B-"
+            }
+            else if (scorePhysics >= 55 && scorePhysics <= 59.99) {
+                  commentPhysics = "Fair"
+                  pointsPhysics = 7
+                  gradePhysics = "C+"
+            }
+            else if (scorePhysics >= 50 && scorePhysics <= 54.99) {
+                  commentPhysics = "Good trial"
+                  pointsPhysics = 6
+                  gradePhysics = "C"
+            }
+            else if (scorePhysics >= 45 && scorePhysics <= 49.99) {
+                  commentPhysics = "You can do better"
+                  pointsPhysics = 5
+                  gradePhysics = "C-"
+            }
+            else if (scorePhysics >= 40 && scorePhysics <= 44.99) {
+                  commentPhysics = "Work hard"
+                  pointsPhysics = 4
+                  gradePhysics = "D+"
+            }
+            else if (scorePhysics >= 35 && scorePhysics <= 39.99) {
+                  commentPhysics = "More effort"
+                  pointsPhysics = 3
+                  gradePhysics = "D"
+            }
+            else if (scorePhysics >= 30 && scorePhysics <= 34.99) {
+                  commentPhysics = "Avoid D's"
+                  pointsPhysics = 2
+                  gradePhysics = "D-"
+            }
+            else if (scorePhysics >= 0 && scorePhysics <= 29.99) {
+                  commentPhysics = "Avoid E's"
+                  pointsPhysics = 1
+                  gradePhysics = "E"
+            }
+            else {
+                  commentPhysics = null
+                  pointsPhysics = null
+                  gradePhysics = null
+            }
+
+
+            // chemistry
+
+            if (scoreChemistry >= 80 && scoreChemistry <= 100) {
+                  commentChemistry = "Excellent"
+                  pointsChemistry = 12
+                  gradeChemistry = "A"
+            }
+            else if (scoreChemistry >= 75 && scoreChemistry <= 79.99) {
+                  commentChemistry = "V.good"
+                  pointsChemistry = 11
+                  gradeChemistry = "A-"
+            }
+            else if (scoreChemistry >= 70 && scoreChemistry <= 74.99) {
+                  commentChemistry = "Good"
+                  pointsChemistry = 10
+                  gradeChemistry = "B+"
+            }
+            else if (scoreChemistry >= 65 && scoreChemistry <= 69.99) {
+                  commentChemistry = "Fairly good"
+                  pointsChemistry = 9
+                  gradeChemistry = "B"
+            }
+            else if (scoreChemistry >= 60 && scoreChemistry <= 64.99) {
+                  commentChemistry = "Fair"
+                  pointsChemistry = 8
+                  gradeChemistry = "B-"
+            }
+            else if (scoreChemistry >= 55 && scoreChemistry <= 59.99) {
+                  commentChemistry = "Fair"
+                  pointsChemistry = 7
+                  gradeChemistry = "C+"
+            }
+            else if (scoreChemistry >= 50 && scoreChemistry <= 54.99) {
+                  commentChemistry = "Good trial"
+                  pointsChemistry = 6
+                  gradeChemistry = "C"
+            }
+            else if (scoreChemistry >= 45 && scoreChemistry <= 49.99) {
+                  commentChemistry = "You can do better"
+                  pointsChemistry = 5
+                  gradeChemistry = "C-"
+            }
+            else if (scoreChemistry >= 40 && scoreChemistry <= 44.99) {
+                  commentChemistry = "Work hard"
+                  pointsChemistry = 4
+                  gradeChemistry = "D+"
+            }
+            else if (scoreChemistry >= 35 && scoreChemistry <= 39.99) {
+                  commentChemistry = "More effort"
+                  pointsChemistry = 3
+                  gradeChemistry = "D"
+            }
+            else if (scoreChemistry >= 30 && scoreChemistry <= 34.99) {
+                  commentChemistry = "Avoid D's"
+                  pointsChemistry = 2
+                  gradeChemistry = "D-"
+            }
+            else if (scoreChemistry >= 0 && scoreChemistry <= 29.99) {
+                  commentChemistry = "Avoid E's"
+                  pointsChemistry = 1
+                  gradeChemistry = "E"
+            }
+            else {
+                  commentChemistry = null
+                  pointsChemistry = null
+                  gradeChemistry = null
+            }
+
+            // history
+            if (scoreHistory >= 80 && scoreHistory <= 100) {
+                  commentHistory = "Excellent"
+                  pointsHistory = 12
+                  gradeHistory = "A"
+            }
+            else if (scoreHistory >= 75 && scoreHistory <= 79.99) {
+                  commentHistory = "V.good"
+                  pointsHistory = 11
+                  gradeHistory = "A-"
+            }
+            else if (scoreHistory >= 70 && scoreHistory <= 74.99) {
+                  commentHistory = "Good"
+                  pointsHistory = 10
+                  gradeHistory = "B+"
+            }
+            else if (scoreHistory >= 65 && scoreHistory <= 69.99) {
+                  commentHistory = "Fairly good"
+                  pointsHistory = 9
+                  gradeHistory = "B"
+            }
+            else if (scoreHistory >= 60 && scoreHistory <= 64.99) {
+                  commentHistory = "Fair"
+                  pointsHistory = 8
+                  gradeHistory = "B-"
+            }
+            else if (scoreHistory >= 55 && scoreHistory <= 59.99) {
+                  commentHistory = "Fair"
+                  pointsHistory = 7
+                  gradeHistory = "C+"
+            }
+            else if (scoreHistory >= 50 && scoreHistory <= 54.99) {
+                  commentHistory = "Good trial"
+                  pointsHistory = 6
+                  gradeHistory = "C"
+            }
+            else if (scoreHistory >= 45 && scoreHistory <= 49.99) {
+                  commentHistory = "You can do better"
+                  pointsHistory = 5
+                  gradeHistory = "C-"
+            }
+            else if (scoreHistory >= 40 && scoreHistory <= 44.99) {
+                  commentHistory = "Work hard"
+                  pointsHistory = 4
+                  gradeHistory = "D+"
+            }
+            else if (scoreHistory >= 35 && scoreHistory <= 39.99) {
+                  commentHistory = "More effort"
+                  pointsHistory = 3
+                  gradeHistory = "D"
+            }
+            else if (scoreHistory >= 30 && scoreHistory <= 34.99) {
+                  commentHistory = "Avoid D's"
+                  pointsHistory = 2
+                  gradeHistory = "D-"
+            }
+            else if (scoreHistory >= 1 && scoreHistory <= 29.99) {
+                  commentHistory = "Avoid E's"
+                  pointsHistory = 1
+                  gradeHistory = "E"
+            }
+            else if (scoreHistory ===0 && scoreHistory === null) {
+                  commentHistory = null
+                  pointsHistory = null
+                  gradeHistory = null
+            }
+            else {
+                  commentHistory = null
+                  pointsHistory = null
+                  gradeHistory = null
+            }
+
+
+            // geography
+            if (scoreGeography >= 80 && scoreGeography <= 100) {
+                  commentGeography = "Excellent"
+                  pointsGeography = 12
+                  gradeGeography = "A"
+            }
+            else if (scoreGeography >= 75 && scoreGeography <= 79.99) {
+                  commentGeography = "V.good"
+                  pointsGeography = 11
+                  gradeGeography = "A-"
+            }
+            else if (scoreGeography >= 70 && scoreGeography <= 74.99) {
+                  commentGeography = "Good"
+                  pointsGeography = 10
+                  gradeGeography = "B+"
+            }
+            else if (scoreGeography >= 65 && scoreGeography <= 69.99) {
+                  commentGeography = "Fairly good"
+                  pointsGeography = 9
+                  gradeGeography = "B"
+            }
+            else if (scoreGeography >= 60 && scoreGeography <= 64.99) {
+                  commentGeography = "Fair"
+                  pointsGeography = 8
+                  gradeGeography = "B-"
+            }
+            else if (scoreGeography >= 55 && scoreGeography <= 59.99) {
+                  commentGeography = "Fair"
+                  pointsGeography = 7
+                  gradeGeography = "C+"
+            }
+            else if (scoreGeography >= 50 && scoreGeography <= 54.99) {
+                  commentGeography = "Good trial"
+                  pointsGeography = 6
+                  gradeGeography = "C"
+            }
+            else if (scoreGeography >= 45 && scoreGeography <= 49.99) {
+                  commentGeography = "You can do better"
+                  pointsGeography = 5
+                  gradeGeography = "C-"
+            }
+            else if (scoreGeography >= 40 && scoreGeography <= 44.99) {
+                  commentGeography = "Work hard"
+                  pointsGeography = 4
+                  gradeGeography = "D+"
+            }
+            else if (scoreGeography >= 35 && scoreGeography <= 39.99) {
+                  commentGeography = "More effort"
+                  pointsGeography = 3
+                  gradeGeography = "D"
+            }
+            else if (scoreGeography >= 30 && scoreGeography <= 34.99) {
+                  commentGeography = "Avoid D's"
+                  pointsGeography = 2
+                  gradeGeography = "D-"
+            }
+            else if (scoreGeography >= 1 && scoreGeography <= 29.99) {
+                  commentGeography = "Avoid E's"
+                  pointsGeography = 1
+                  gradeGeography = "E"
+            }
+            else if (scoreGeography === null || scoreGeography===0 ) {
+                  scoreGeography = null
+                  scoreGeography = null
+                  scoreGeography = null
+            }
+            else {
+                  commentGeography = null
+                  pointsGeography = null
+                  gradeGeography = null
+            }
+
+            //CRE
+            if (scoreCRE >= 80 && scoreCRE <= 100) {
+                  commentCRE = "Excellent"
+                  pointsCRE = 12
+                  gradeCRE = "A"
+            }
+            else if (scoreCRE >= 75 && scoreCRE <= 79.99) {
+                  commentCRE = "V.good"
+                  pointsCRE = 11
+                  gradeCRE = "A-"
+            }
+            else if (scoreCRE >= 70 && scoreCRE <= 74.99) {
+                  commentCRE = "Good"
+                  pointsCRE = 10
+                  gradeCRE = "B+"
+            }
+            else if (scoreCRE >= 65 && scoreCRE <= 69.99) {
+                  commentCRE = "Fairly good"
+                  pointsCRE = 9
+                  gradeCRE = "B"
+            }
+            else if (scoreCRE >= 60 && scoreCRE <= 64.99) {
+                  commentCRE = "Fair"
+                  pointsCRE = 8
+                  gradeCRE = "B-"
+            }
+            else if (scoreCRE >= 55 && scoreCRE <= 59.99) {
+                  commentCRE = "Fair"
+                  pointsCRE = 7
+                  gradeCRE = "C+"
+            }
+            else if (scoreCRE >= 50 && scoreCRE <= 54.99) {
+                  commentCRE = "Good trial"
+                  pointsCRE = 6
+                  gradeCRE = "C"
+            }
+            else if (scoreCRE >= 45 && scoreCRE <= 49.99) {
+                  commentCRE = "You can do better"
+                  pointsCRE = 5
+                  gradeCRE = "C-"
+            }
+            else if (scoreCRE >= 40 && scoreCRE <= 44.99) {
+                  commentCRE = "Work hard"
+                  pointsCRE = 4
+                  gradeCRE = "D+"
+            }
+            else if (scoreCRE >= 35 && scoreCRE <= 39.99) {
+                  commentCRE = "More effort"
+                  pointsCRE = 3
+                  gradeCRE = "D"
+            }
+            else if (scoreCRE >= 30 && scoreCRE <= 34.99) {
+                  commentCRE = "Avoid D's"
+                  pointsCRE = 2
+                  gradeCRE = "D-"
+            }
+            else if (scoreCRE >= 1 && scoreCRE <= 29.99) {
+                  commentCRE = "Avoid E's"
+                  pointsCRE = 1
+                  gradeCRE = "E"
+            }
+            else if (scoreCRE === null || scoreCRE===0 ) {
+                  scoreCRE = null
+                  scoreCRE = null
+                  scoreCRE = null
+            }
+            else {
+                  commentCRE = null
+                  pointsCRE = null
+                  gradeCRE = null
+            }
+
+            //business
+            if (scoreBusiness >= 80 && scoreBusiness <= 100) {
+                  commentBusiness = "Excellent"
+                  pointsBusiness = 12
+                  gradeBusiness = "A"
+            }
+            else if (scoreBusiness >= 75 && scoreBusiness <= 79.99) {
+                  commentBusiness = "V.good"
+                  pointsBusiness = 11
+                  gradeBusiness = "A-"
+            }
+            else if (scoreBusiness >= 70 && scoreBusiness <= 74.99) {
+                  commentBusiness = "Good"
+                  pointsBusiness = 10
+                  gradeBusiness = "B+"
+            }
+            else if (scoreBusiness >= 65 && scoreBusiness <= 69.99) {
+                  commentBusiness = "Fairly good"
+                  pointsBusiness = 9
+                  gradeBusiness = "B"
+            }
+            else if (scoreBusiness >= 60 && scoreBusiness <= 64.99) {
+                  commentBusiness = "Fair"
+                  pointsBusiness = 8
+                  gradeBusiness = "B-"
+            }
+            else if (scoreBusiness >= 55 && scoreBusiness <= 59.99) {
+                  commentBusiness = "Fair"
+                  pointsBusiness = 7
+                  gradeBusiness = "C+"
+            }
+            else if (scoreBusiness >= 50 && scoreBusiness <= 54.99) {
+                  commentBusiness = "Good trial"
+                  pointsBusiness = 6
+                  gradeBusiness = "C"
+            }
+            else if (scoreBusiness >= 45 && scoreBusiness <= 49.99) {
+                  commentBusiness = "You can do better"
+                  pointsBusiness = 5
+                  gradeBusiness = "C-"
+            }
+            else if (scoreBusiness >= 40 && scoreBusiness <= 44.99) {
+                  commentBusiness = "Work hard"
+                  pointsBusiness = 4
+                  gradeBusiness = "D+"
+            }
+            else if (scoreBusiness >= 35 && scoreBusiness <= 39.99) {
+                  commentBusiness = "More effort"
+                  pointsBusiness = 3
+                  gradeBusiness = "D"
+            }
+            else if (scoreBusiness >= 30 && scoreBusiness <= 34.99) {
+                  commentBusiness = "Avoid D's"
+                  pointsBusiness = 2
+                  gradeBusiness = "D-"
+            }
+            else if (scoreBusiness >= 1 && scoreBusiness <= 29.99) {
+                  commentBusiness = "Avoid E's"
+                  pointsBusiness = 1
+                  gradeBusiness = "E"
+            }
+            else if (scoreBusiness === null || scoreBusiness===0 ) {
+                  scoreBusiness = null
+                  scoreBusiness = null
+                  scoreBusiness = null
+            }
+            else {
+                  commentBusiness = null
+                  pointsBusiness = null
+                  gradeBusiness = null
+            }
+
+            // agriculture
+
+            if (scoreAgriculture >= 80 && scoreAgriculture <= 100) {
+                  commentAgriculture = "Excellent"
+                  pointsAgriculture = 12
+                  gradeAgriculture = "A"
+            }
+            else if (scoreAgriculture >= 75 && scoreAgriculture <= 79.99) {
+                  commentAgriculture = "V.good"
+                  pointsAgriculture = 11
+                  gradeAgriculture = "A-"
+            }
+            else if (scoreAgriculture >= 70 && scoreAgriculture <= 74.99) {
+                  commentAgriculture = "Good"
+                  pointsAgriculture = 10
+                  gradeAgriculture = "B+"
+            }
+            else if (scoreAgriculture >= 65 && scoreAgriculture <= 69.99) {
+                  commentAgriculture = "Fairly good"
+                  pointsAgriculture = 9
+                  gradeAgriculture = "B"
+            }
+            else if (scoreAgriculture >= 60 && scoreAgriculture <= 64.99) {
+                  commentAgriculture = "Fair"
+                  pointsAgriculture = 8
+                  gradeAgriculture = "B-"
+            }
+            else if (scoreAgriculture >= 55 && scoreAgriculture <= 59.99) {
+                  commentAgriculture = "Fair"
+                  pointsAgriculture = 7
+                  gradeAgriculture = "C+"
+            }
+            else if (scoreAgriculture >= 50 && scoreAgriculture <= 54.99) {
+                  commentAgriculture = "Good trial"
+                  pointsAgriculture = 6
+                  gradeAgriculture = "C"
+            }
+            else if (scoreAgriculture >= 45 && scoreAgriculture <= 49.99) {
+                  commentAgriculture = "You can do better"
+                  pointsAgriculture = 5
+                  gradeAgriculture = "C-"
+            }
+            else if (scoreAgriculture >= 40 && scoreAgriculture <= 44.99) {
+                  commentAgriculture = "Work hard"
+                  pointsAgriculture = 4
+                  gradeAgriculture = "D+"
+            }
+            else if (scoreAgriculture >= 35 && scoreAgriculture <= 39.99) {
+                  commentAgriculture = "More effort"
+                  pointsAgriculture = 3
+                  gradeAgriculture = "D"
+            }
+            else if (scoreAgriculture >= 30 && scoreAgriculture <= 34.99) {
+                  commentAgriculture = "Avoid D's"
+                  pointsAgriculture = 2
+                  gradeAgriculture = "D-"
+            }
+            else if (scoreAgriculture >= 1 && scoreAgriculture <= 29.99) {
+                  commentAgriculture = "Avoid E's"
+                  pointsAgriculture = 1
+                  gradeAgriculture = "E"
+            }
+            else if (scoreAgriculture === null || scoreAgriculture===0 ) {
+                  commentAgriculture = null
+                  pointsAgriculture = null
+                  gradeAgriculture = null
+            }
+            else {
+                  commentAgriculture = null
+                  pointsAgriculture = null
+                  gradeAgriculture = null
+            }
+
+
+            let queryID = { _id: obj._id }
+            let query = {
+                  "kiswahili.comment": commentKiswahili,
+                  "english.comment": commentEnglish,
+                  "mathematics.comment":commentMathematics,
+                  "biology.comment":commentMathematics,
+                  "physics.comment":commentPhysics,
+                  "biology.comment":commentBiology,
+                  "chemistry.comment":commentChemistry,
+                  "history.comment":commentHistory,
+                  "cre.comment":commentCRE,
+                  "geography.comment":commentGeography,
+                  "business.comment":commentBusiness,
+                  "agriculture.comment":commentAgriculture,
+                  "kiswahili.points": pointsKiswahili,
+                  "english.points": pointsEnglish,
+                  "mathematics.points":pointsMathematics,
+                  "biology.points":pointsMathematics,
+                  "physics.points":pointsPhysics,
+                  "biology.points":pointsBiology,
+                  "chemistry.points":pointsChemistry,
+                  "history.points":pointsHistory,
+                  "cre.points":pointsCRE,
+                  "geography.points":pointsGeography,
+                  "business.points":pointsBusiness,
+                  "agriculture.points":pointsAgriculture,
+                  "kiswahili.grade": gradeKiswahili,
+                  "english.grade": gradeEnglish,
+                  "mathematics.grade":gradeMathematics,
+                  "biology.grade":gradeMathematics,
+                  "physics.grade":gradePhysics,
+                  "biology.grade":gradeBiology,
+                  "chemistry.grade":gradeChemistry,
+                  "history.grade":gradeHistory,
+                  "cre.grade":gradeCRE,
+                  "geography.grade":gradeGeography,
+                  "business.grade":gradeBusiness,
+                  "agriculture.grade":commentAgriculture,
+            }
+
+            result = await CaptureMarks.updateOne({_id:obj._id},query)
+            console.log(result)
+            resultArray.push(result)
+      })
 
       res.status(200).json({
-            status: 'success',
-            data: comment
+            status:'success',
+            message:"Updated successfully"
       })
+
+     
+
 })
 
 module.exports = {
