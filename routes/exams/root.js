@@ -39,11 +39,13 @@ router.route('/capturedmarks/getmarksbyexamitementryid/:entryID')
 // subject grades and comments
 router.route('/subjectgradesandcomments')
   .patch(marksController.subjectGradesAndComments)
-//  router.route('/marks/process/senior')
-//    .patch(marksController.senior)
 
-// //results
-//  router.route('/results/processresults')
+// overall results form 3 and 4
+router.route('/calculateoverallgrades')
+  .patch(marksController.calculateGrades)
+
+//ranking form3 and 4
+
 
 module.exports = router;
 

@@ -3,7 +3,6 @@ const SetUpExam = require("../../../model/exam/examHeader");
 const catchAsync = require("../../../utils/catchAsync");
 const Students = require("../../../model/students/students")
 const Unit = require("../../../model/units/unit")
-const cal = require("../../../controller/exam/marks/subjectandcomments")
 const initiateMarks = catchAsync(async (req, res, next) => {
       let data = req.body
       let examID = data._id
@@ -55,9 +54,19 @@ const initiateMarks = catchAsync(async (req, res, next) => {
       })
 })
 const captureScoreByExamBySubject = catchAsync(async (req, res, next) => {
-      let { data } = req.body
-      let _id = data._id
-
+      let _id  = req.body._id
+      let englishScore = req.body.english.score
+      let kiswahiliScore = req.body.kiswahili.score
+      let mathamaticsScore = req.body.mathematics.score
+      let biologyScore = req.body.biology.score
+      let physicsScore = req.body.physics.score
+      let chemistryScore = req.body.chemistry.score
+      let agricultureScore = req.body.agriculture.score
+      let businessScore = req.body.business.score
+      let creScore = req.body.cre.score
+      let geographyScore = req.body.geography.score
+      let historyScore = req.body.history.score
+      
       const findExamList = await CaptureMarks.findOne({ _id: _id })
       if (!findExamList) {
             return res.status(400).json({
@@ -65,7 +74,20 @@ const captureScoreByExamBySubject = catchAsync(async (req, res, next) => {
                   message: 'we could not retried a matching id for the selected item'
             })
       }
-      let result = await CaptureMarks.updateOne({ _id: _id }, data)
+      let result = await CaptureMarks.updateOne({ _id: _id }, 
+            {
+                  "english.score":englishScore,
+                  "kiswahili.score":kiswahiliScore,
+                  "biology.score":biologyScore,
+                  "chemistry.score":chemistryScore,
+                  "mathematics.score":biologyScore,
+                  "physics.score":physicsScore,
+                  "agriculture.score":agricultureScore,
+                  "business.score":businessScore,
+                  "cre.score":creScore,
+                  "geography.score":geographyScore,
+                  "history.score":historyScore
+            })
       res.status(201).json({
             status: 'success',
             result: result.length,
@@ -86,8 +108,6 @@ const getCapturedMarksByItemEntryID = catchAsync(async (req, res, next) => {
             result: examEntries.length,
             data: examEntries
       })
-
-
 })
 const getCapturedMarksByExamID = catchAsync(async (req, res, next) => {
       let examID = req.params.examID
@@ -108,13 +128,13 @@ const getCapturedMarksByExamID = catchAsync(async (req, res, next) => {
 const subjectGradesAndComments = catchAsync(async (req, res, next) => {
       let { data } = req.body
       let examID = data.examID
-      if(!examID){
+      if (!examID) {
             return res.status(400).json({
-                 status:'failed',
-                  message:'please provide exam id'
+                  status: 'failed',
+                  message: 'please provide exam id'
             })
       }
-      let studentList = await CaptureMarks.find({examID:examID})
+      let studentList = await CaptureMarks.find({ examID: examID })
       //    initialize comment for all subjects
       let { commentKiswahili,
             commentEnglish,
@@ -153,7 +173,7 @@ const subjectGradesAndComments = catchAsync(async (req, res, next) => {
             pointsBusiness } = 0
       // initialize points for all 
       let resultArray = []
-      studentList.forEach(async(obj, index, array) => {
+      studentList.forEach(async (obj, index, array) => {
             let scoreKiswahili = obj.kiswahili.score
             let scoreEnglish = obj.english.score
             let scoreMathematics = obj.mathematics.score
@@ -163,6 +183,7 @@ const subjectGradesAndComments = catchAsync(async (req, res, next) => {
             let scoreHistory = obj.history.score
             let scoreCRE = obj.cre.score
             let scoreGeography = obj.geography.score
+
             let scoreAgriculture = obj.agriculture.score
             let scoreBusiness = obj.business.score
             // update kiswahili
@@ -226,6 +247,11 @@ const subjectGradesAndComments = catchAsync(async (req, res, next) => {
                   commentKiswahili = "Ji kaze"
                   pointsKiswahili = 1
                   gradeKiswahili = "E"
+            }
+            else if (scoreKiswahili === 0 && scoreKiswahili === null) {
+                  commentKiswahili = null
+                  pointsKiswahili = null
+                  gradeKiswahili = null
             }
             else {
                   commentKiswahili = null
@@ -292,10 +318,15 @@ const subjectGradesAndComments = catchAsync(async (req, res, next) => {
                   pointsEnglish = 2
                   gradeEnglish = "D-"
             }
-            else if (scoreEnglish >= 0 && scoreEnglish <= 29.99) {
+            else if (scoreEnglish >= 1 && scoreEnglish <= 29.99) {
                   commentEnglish = "Avoid E's"
                   pointsEnglish = 1
                   gradeEnglish = "E"
+            }
+            else if (scoreEnglish === 0 && scoreEnglish === null) {
+                  commentEnglish = null
+                  pointsEnglish = null
+                  gradeEnglish = null
             }
             else {
                   commentEnglish = null
@@ -360,10 +391,15 @@ const subjectGradesAndComments = catchAsync(async (req, res, next) => {
                   pointsMathematics = 2
                   gradeMathematics = "D-"
             }
-            else if (scoreMathematics >= 0 && scoreMathematics <= 29.99) {
+            else if (scoreMathematics >= 1 && scoreMathematics <= 29.99) {
                   commentMathematics = "Avoid E's"
                   pointsMathematics = 1
                   gradeMathematics = "E"
+            }
+            else if (scoreMathematics === 0 && scoreMathematics === null) {
+                  commentMathematics = null
+                  pointsMathematics = null
+                  gradeMathematics = null
             }
             else {
                   commentMathematics = null
@@ -428,10 +464,15 @@ const subjectGradesAndComments = catchAsync(async (req, res, next) => {
                   pointsBiology = 2
                   gradeBiology = "D-"
             }
-            else if (scoreBiology >= 0 && scoreBiology <= 29.99) {
+            else if (scoreBiology >= 1 && scoreBiology <= 29.99) {
                   commentBiology = "Avoid E's"
                   pointsBiology = 1
                   gradeBiology = "E"
+            }
+            else if (scoreBiology === 0 && scoreBiology === null) {
+                  commentBiology = null
+                  pointsBiology = null
+                  gradeBiology = null
             }
             else {
                   commentBiology = null
@@ -496,10 +537,15 @@ const subjectGradesAndComments = catchAsync(async (req, res, next) => {
                   pointsPhysics = 2
                   gradePhysics = "D-"
             }
-            else if (scorePhysics >= 0 && scorePhysics <= 29.99) {
+            else if (scorePhysics >= 1 && scorePhysics <= 29.99) {
                   commentPhysics = "Avoid E's"
                   pointsPhysics = 1
                   gradePhysics = "E"
+            }
+            else if (scorePhysics === 0 && scorePhysics === null) {
+                  commentPhysics = null
+                  pointsPhysics = null
+                  gradePhysics = null
             }
             else {
                   commentPhysics = null
@@ -565,10 +611,15 @@ const subjectGradesAndComments = catchAsync(async (req, res, next) => {
                   pointsChemistry = 2
                   gradeChemistry = "D-"
             }
-            else if (scoreChemistry >= 0 && scoreChemistry <= 29.99) {
+            else if (scoreChemistry >= 1 && scoreChemistry <= 29.99) {
                   commentChemistry = "Avoid E's"
                   pointsChemistry = 1
                   gradeChemistry = "E"
+            }
+            else if (scoreChemistry === 0 && scoreChemistry === null) {
+                  commentChemistry = null
+                  pointsChemistry = null
+                  gradeChemistry = null
             }
             else {
                   commentChemistry = null
@@ -637,7 +688,7 @@ const subjectGradesAndComments = catchAsync(async (req, res, next) => {
                   pointsHistory = 1
                   gradeHistory = "E"
             }
-            else if (scoreHistory ===0 && scoreHistory === null) {
+            else if (scoreHistory === 0 && scoreHistory === null) {
                   commentHistory = null
                   pointsHistory = null
                   gradeHistory = null
@@ -710,10 +761,10 @@ const subjectGradesAndComments = catchAsync(async (req, res, next) => {
                   pointsGeography = 1
                   gradeGeography = "E"
             }
-            else if (scoreGeography === null || scoreGeography===0 ) {
-                  scoreGeography = null
-                  scoreGeography = null
-                  scoreGeography = null
+            else if (scoreGeography === 0 || scoreGeography === null) {
+                  commentGeography = null
+                  pointsGeography = null
+                  gradeGeography = null
             }
             else {
                   commentGeography = null
@@ -782,10 +833,10 @@ const subjectGradesAndComments = catchAsync(async (req, res, next) => {
                   pointsCRE = 1
                   gradeCRE = "E"
             }
-            else if (scoreCRE === null || scoreCRE===0 ) {
-                  scoreCRE = null
-                  scoreCRE = null
-                  scoreCRE = null
+            else if (scoreCRE === 0 || scoreCRE === null) {
+                  commentCRE = null
+                  pointsCRE = null
+                  gradeCRE = null
             }
             else {
                   commentCRE = null
@@ -854,10 +905,10 @@ const subjectGradesAndComments = catchAsync(async (req, res, next) => {
                   pointsBusiness = 1
                   gradeBusiness = "E"
             }
-            else if (scoreBusiness === null || scoreBusiness===0 ) {
-                  scoreBusiness = null
-                  scoreBusiness = null
-                  scoreBusiness = null
+            else if (scoreBusiness === null || scoreBusiness === 0) {
+                  commentBusiness = null
+                  pointsBusiness = null
+                  gradeBusiness = null
             }
             else {
                   commentBusiness = null
@@ -927,7 +978,7 @@ const subjectGradesAndComments = catchAsync(async (req, res, next) => {
                   pointsAgriculture = 1
                   gradeAgriculture = "E"
             }
-            else if (scoreAgriculture === null || scoreAgriculture===0 ) {
+            else if (scoreAgriculture === null || scoreAgriculture === 0) {
                   commentAgriculture = null
                   pointsAgriculture = null
                   gradeAgriculture = null
@@ -943,54 +994,141 @@ const subjectGradesAndComments = catchAsync(async (req, res, next) => {
             let query = {
                   "kiswahili.comment": commentKiswahili,
                   "english.comment": commentEnglish,
-                  "mathematics.comment":commentMathematics,
-                  "biology.comment":commentMathematics,
-                  "physics.comment":commentPhysics,
-                  "biology.comment":commentBiology,
-                  "chemistry.comment":commentChemistry,
-                  "history.comment":commentHistory,
-                  "cre.comment":commentCRE,
-                  "geography.comment":commentGeography,
-                  "business.comment":commentBusiness,
-                  "agriculture.comment":commentAgriculture,
+                  "mathematics.comment": commentMathematics,
+                  "biology.comment": commentMathematics,
+                  "physics.comment": commentPhysics,
+                  "biology.comment": commentBiology,
+                  "chemistry.comment": commentChemistry,
+                  "history.comment": commentHistory,
+                  "cre.comment": commentCRE,
+                  "geography.comment": commentGeography,
+                  "business.comment": commentBusiness,
+                  "agriculture.comment": commentAgriculture,
                   "kiswahili.points": pointsKiswahili,
                   "english.points": pointsEnglish,
-                  "mathematics.points":pointsMathematics,
-                  "biology.points":pointsMathematics,
-                  "physics.points":pointsPhysics,
-                  "biology.points":pointsBiology,
-                  "chemistry.points":pointsChemistry,
-                  "history.points":pointsHistory,
-                  "cre.points":pointsCRE,
-                  "geography.points":pointsGeography,
-                  "business.points":pointsBusiness,
-                  "agriculture.points":pointsAgriculture,
+                  "mathematics.points": pointsMathematics,
+                  "biology.points": pointsMathematics,
+                  "physics.points": pointsPhysics,
+                  "biology.points": pointsBiology,
+                  "chemistry.points": pointsChemistry,
+                  "history.points": pointsHistory,
+                  "cre.points": pointsCRE,
+                  "geography.points": pointsGeography,
+                  "business.points": pointsBusiness,
+                  "agriculture.points": pointsAgriculture,
                   "kiswahili.grade": gradeKiswahili,
                   "english.grade": gradeEnglish,
-                  "mathematics.grade":gradeMathematics,
-                  "biology.grade":gradeMathematics,
-                  "physics.grade":gradePhysics,
-                  "biology.grade":gradeBiology,
-                  "chemistry.grade":gradeChemistry,
-                  "history.grade":gradeHistory,
-                  "cre.grade":gradeCRE,
-                  "geography.grade":gradeGeography,
-                  "business.grade":gradeBusiness,
-                  "agriculture.grade":commentAgriculture,
+                  "mathematics.grade": gradeMathematics,
+                  "biology.grade": gradeMathematics,
+                  "physics.grade": gradePhysics,
+                  "biology.grade": gradeBiology,
+                  "chemistry.grade": gradeChemistry,
+                  "history.grade": gradeHistory,
+                  "cre.grade": gradeCRE,
+                  "geography.grade": gradeGeography,
+                  "business.grade": gradeBusiness,
+                  "agriculture.grade": commentAgriculture,
             }
 
-            result = await CaptureMarks.updateOne({_id:obj._id},query)
+            result = await CaptureMarks.updateOne({ _id: obj._id }, query)
             console.log(result)
             resultArray.push(result)
       })
 
       res.status(200).json({
-            status:'success',
-            message:"Updated successfully"
+            status: 'success',
+            message: "Updated successfully"
       })
+})
 
-     
+const calculateGrades = catchAsync(async (req, res, next) => {
+      // get all students marks
+      // loop through each student
+      // add each students marks and points
 
+      let examID = req.body.examID
+      if (!examID) {
+            return res.status(400).json({
+                  status: 'failed',
+                  message: 'exam id was not provided'
+            })
+      }
+      let studentList = await CaptureMarks.find({ examID: examID })
+      if (!studentList) {
+            return res.status(400).json({
+                  stattus: 'failed',
+                  message: 'sorry an an error occured, the examid couldnt be found'
+            })
+      }
+      let cat1 = []
+      let points1 = []
+      studentList.forEach((obj, index, array) => {
+            let cat1Sub1 = obj.kiswahili.score
+            let cat1Sub2 = obj.english.score
+            let cat1Sub3 = obj.mathematics.score
+            let cat1Points1 = obj.kiswahili.points
+            let cat1Point2 = obj.english.points
+            let cat1Points3 = obj.mathematics.points
+            cat1.push(cat1Sub1)
+            cat1.push(cat1Sub2)
+            cat1.push(cat1Sub3)
+            points1.push(cat1Points1)
+            points1.push(cat1Point2)
+            points1.push(cat1Points3)
+            const initialValue = 0;
+            
+
+            let cat2 = []
+            let points2 = []
+            let cat2Sub1 = obj.biology.score
+            let cat2Sub2 = obj.physics.score
+            let cat2Sub3 = obj.chemistry.score
+            let cat2Points1 = obj.biology.points
+            let cat2Point2 = obj.physics.points
+            let cat2Points3 = obj.chemistry.points
+            cat2.push(cat2Sub1)
+            cat2.push(cat2Sub2)
+            cat2.push(cat2Sub3)
+            points2.push(cat2Points1)
+            points2.push(cat2Point2)
+            points2.push(cat2Points3)
+
+
+            let cat3 = []
+            let points3 = []
+            let cat3Sub1 = obj.history.score
+            let cat3Sub2 = obj.geography.score
+            let cat3Sub3 = obj.cre.score
+            let cat3Points1 = obj.history.points
+            let cat3Point2 = obj.geography.points
+            let cat3Points3 = obj.cre.points
+            cat3.push(cat3Sub1)
+            cat3.push(cat3Sub2)
+            cat3.push(cat3Sub3)
+            points3.push(cat3Points1)
+            points3.push(cat3Point2)
+            points3.push(cat3Points3)
+
+            let cat4 = []
+            let points4 = []
+            let cat4Sub1 = obj.agriculture.score
+            let cat4Sub2 = obj.business.score
+
+            let cat4Points1 = obj.agriculture.points
+            let cat4Points2 = obj.business.points
+            cat4.push(cat4Sub1)
+            cat4.push(cat4Sub2)
+
+            points4.push(cat4Points1)
+            points4.push(cat4Points2)
+
+      })
+      let initialValue = 0
+      const cat1Sum = cat1.reduce(
+            (previousValue, currentValue) => previousValue + currentValue,
+            initialValue
+      );
+      console.log(cat1Sum)
 })
 
 module.exports = {
@@ -998,6 +1136,6 @@ module.exports = {
       captureScoreByExamBySubject,
       getCapturedMarksByExamID,
       getCapturedMarksByItemEntryID,
-      subjectGradesAndComments
-
+      subjectGradesAndComments,
+      calculateGrades
 };
