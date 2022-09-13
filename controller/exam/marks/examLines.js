@@ -54,7 +54,7 @@ const initiateMarks = catchAsync(async (req, res, next) => {
       })
 })
 const captureScoreByExamBySubject = catchAsync(async (req, res, next) => {
-      let _id  = req.body._id
+      let _id = req.body._id
       let englishScore = req.body.english.score
       let kiswahiliScore = req.body.kiswahili.score
       let mathamaticsScore = req.body.mathematics.score
@@ -66,7 +66,7 @@ const captureScoreByExamBySubject = catchAsync(async (req, res, next) => {
       let creScore = req.body.cre.score
       let geographyScore = req.body.geography.score
       let historyScore = req.body.history.score
-      
+
       const findExamList = await CaptureMarks.findOne({ _id: _id })
       if (!findExamList) {
             return res.status(400).json({
@@ -74,19 +74,19 @@ const captureScoreByExamBySubject = catchAsync(async (req, res, next) => {
                   message: 'we could not retried a matching id for the selected item'
             })
       }
-      let result = await CaptureMarks.updateOne({ _id: _id }, 
+      let result = await CaptureMarks.updateOne({ _id: _id },
             {
-                  "english.score":englishScore,
-                  "kiswahili.score":kiswahiliScore,
-                  "biology.score":biologyScore,
-                  "chemistry.score":chemistryScore,
-                  "mathematics.score":biologyScore,
-                  "physics.score":physicsScore,
-                  "agriculture.score":agricultureScore,
-                  "business.score":businessScore,
-                  "cre.score":creScore,
-                  "geography.score":geographyScore,
-                  "history.score":historyScore
+                  "english.score": englishScore,
+                  "kiswahili.score": kiswahiliScore,
+                  "biology.score": biologyScore,
+                  "chemistry.score": chemistryScore,
+                  "mathematics.score": biologyScore,
+                  "physics.score": physicsScore,
+                  "agriculture.score": agricultureScore,
+                  "business.score": businessScore,
+                  "cre.score": creScore,
+                  "geography.score": geographyScore,
+                  "history.score": historyScore
             })
       res.status(201).json({
             status: 'success',
@@ -124,7 +124,6 @@ const getCapturedMarksByExamID = catchAsync(async (req, res, next) => {
             data: examEntries
       })
 })
-
 const subjectGradesAndComments = catchAsync(async (req, res, next) => {
       let { data } = req.body
       let examID = data.examID
@@ -1029,12 +1028,10 @@ const subjectGradesAndComments = catchAsync(async (req, res, next) => {
                   "business.grade": gradeBusiness,
                   "agriculture.grade": commentAgriculture,
             }
-
             result = await CaptureMarks.updateOne({ _id: obj._id }, query)
             console.log(result)
             resultArray.push(result)
       })
-
       res.status(200).json({
             status: 'success',
             message: "Updated successfully"
@@ -1042,10 +1039,6 @@ const subjectGradesAndComments = catchAsync(async (req, res, next) => {
 })
 
 const calculateGrades = catchAsync(async (req, res, next) => {
-      // get all students marks
-      // loop through each student
-      // add each students marks and points
-
       let examID = req.body.examID
       if (!examID) {
             return res.status(400).json({
@@ -1060,9 +1053,10 @@ const calculateGrades = catchAsync(async (req, res, next) => {
                   message: 'sorry an an error occured, the examid couldnt be found'
             })
       }
-      let cat1 = []
-      let points1 = []
+
       studentList.forEach((obj, index, array) => {
+            let cat1 = []
+            let points1 = []
             let cat1Sub1 = obj.kiswahili.score
             let cat1Sub2 = obj.english.score
             let cat1Sub3 = obj.mathematics.score
@@ -1076,7 +1070,15 @@ const calculateGrades = catchAsync(async (req, res, next) => {
             points1.push(cat1Point2)
             points1.push(cat1Points3)
             const initialValue = 0;
-            
+            const cat1sum = cat1.reduce(
+                  (previousValue, currentValue) => previousValue + currentValue,
+                  initialValue
+            );
+            const points1sum = points1.reduce(
+                  (previousValue, currentValue) => previousValue + currentValue,
+                  initialValue
+            );
+
 
             let cat2 = []
             let points2 = []
@@ -1092,6 +1094,15 @@ const calculateGrades = catchAsync(async (req, res, next) => {
             points2.push(cat2Points1)
             points2.push(cat2Point2)
             points2.push(cat2Points3)
+
+            let max1cat2 = Math.max.apply(null, cat2)
+            let max1points2 = Math.max.apply(null, points2)
+            points2.splice(cat2.indexOf(max1points2))
+            cat1.splice(cat2.indexOf(max1cat2), 1);
+            let max2cat2 = Math.max.apply(null, cat2)
+            let max2points2 = Math.max.apply(null, points2)
+            let cat2sum = max1cat2 + max2cat2
+            let points2sum = max1points2 + max2points2
 
 
             let cat3 = []
@@ -1109,8 +1120,18 @@ const calculateGrades = catchAsync(async (req, res, next) => {
             points3.push(cat3Point2)
             points3.push(cat3Points3)
 
-            let cat4 = []
-            let points4 = []
+            let max1cat3 = Math.max.apply(null, cat3)
+            let max1points3 = Math.max.apply(null, points3)
+            points3.splice(points3.indexOf(points3), 1);
+            cat3.splice(cat3.indexOf(max1cat3), 1);
+            let newArrayPoints3 = points3
+            let newArrayCat3 = cat3
+            let cat3sum = max1cat3
+            let points3sum = max1points3
+
+
+            let cat4 = newArrayCat3
+            let points4 = newArrayPoints3
             let cat4Sub1 = obj.agriculture.score
             let cat4Sub2 = obj.business.score
 
@@ -1121,16 +1142,83 @@ const calculateGrades = catchAsync(async (req, res, next) => {
 
             points4.push(cat4Points1)
             points4.push(cat4Points2)
+            let cat4sum = Math.max.apply(null, cat4)
+            let points4sum = Math.max.apply(null, points4)
+            let totalmarks = cat1sum + cat2sum + cat3sum + cat4sum
+            let totalpoints = points1sum + points2sum + points3sum + points4sum
+            let meanmarks = (totalmarks / 7).toFixed(2) 
+            let teacherComment  = null
+            let principleComment = null
+            let overallGrade = null
+            if(totalpoints>=78 && totalpoints<=84){
+                  teacherComment = "Excellent"
+                  principleComment = "Excellent"
+                  overallGrade = "A"
+            }
+            else if(totalpoints >= 71 && totalpoints <= 77){
+                  teacherComment = "V.good"
+                  principleComment = "V.good"
+                  overallGrade = "A-"
+            }
+            else if(totalpoints >= 64 && totalpoints <= 70){
+                  teacherComment = "Good"
+                  principleComment = "Good"
+                  overallGrade = "B+"
+            }
+            else if(totalpoints >= 57 && totalpoints<= 63){
+                  teacherComment = "Fair"
+                  principleComment = "Fair"
+                  overallGrade = "B"
+            }
+            else if(totalpoints >= 50 && totalpoints <= 56){
+                  teacherComment = "Fair"
+                  principleComment = "Fair"
+                  overallGrade = "B-"
+            }
+            else if(totalpoints >= 43 && totalpoints<= 49){
+                  teacherComment = "Good trial"
+                  principleComment = "Good trial"
+                  overallGrade = "C+"
+            }
+            else if(totalpoints >= 36 && totalpoints<= 42){
+                  teacherComment = "Improve"
+                  principleComment = "Improve"
+                  overallGrade = "C"   
+            }
+            else if(totalpoints >= 29 && totalpoints <= 35){
+                  teacherComment = "Work harder"
+                  principleComment = "Work harder"
+                  overallGrade = "C-"
+            }
+            else if(totalpoints >= 22 && totalpoints <= 28){
+                  teacherComment = "Work hard"
+                  principleComment = "Work hard"
+                  overallGrade = "D+"
+            }
+            else if(totalpoints >= 15 && totalpoints <= 21){
+                  teacherComment = "Put more effort"
+                  principleComment = "Put more effort"
+                  overallGrade = "D"
+            }
+            else if(totalpoints >= 8 && totalpoints <= 14){
+                  teacherComment = "Avoid D grade"
+                  principleComment = "Avoid D grade"
+                  overallGrade = "D-"
+            }
+            else if(totalpoints >= 1 && totalpoints <= 7){
+                  teacherComment = "Avoid E grade"
+                  principleComment = "Avoid E grade"
+                  overallGrade = "E"
+            }
+            else{    
+                  teacherComment = null
+                  principleComment = null
+                  overallGrade = null       
+            }
 
+            console.log(overallGrade +""+ totalpoints)
       })
-      let initialValue = 0
-      const cat1Sum = cat1.reduce(
-            (previousValue, currentValue) => previousValue + currentValue,
-            initialValue
-      );
-      console.log(cat1Sum)
 })
-
 module.exports = {
       initiateMarks,
       captureScoreByExamBySubject,
